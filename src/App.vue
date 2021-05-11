@@ -65,28 +65,30 @@ export default {
     addProduct() {
       let obj = { shop: this.shop, calories: this.calories, fat: this.fat };
 
-      if (this.validateProduct(obj)) {
+      this.desserts.push(obj);
+
+      /* if (this.validateProduct(obj)) {
         this.desserts.push(obj);
-      }
+      } */
     },
-    setVisibleAlert(visible) {
-      if (!visible) {
-        this.alertVisibility = true
+    setVisibleAlert(val) {
+      if (val.length > 0) {
+        this.alertVisibility = false;
       } else {
-        this.alertVisibility = false
+        this.alertVisibility = true;
       }
     },
-    validateProduct(obj) {
-      let req = true;
-
-      if (!obj.shop.length > 0) {
-        req = false;
-      }
-
-      this.setVisibleAlert(req)
-
-      return req;
+  },
+  watch: {
+    shop(val) {
+      this.setVisibleAlert(val)
     },
+    calories(val){
+      this.setVisibleAlert(val)
+    },
+    fat(val){
+      this.setVisibleAlert(val)
+    }
   },
 };
 </script>
