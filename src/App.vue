@@ -1,5 +1,6 @@
 <template>
   <v-app id="inspire">
+    <alert v-show="alertVisibility"></alert>
     <v-form ref="form">
       <v-text-field
         label="Shop"
@@ -20,12 +21,7 @@
         v-model="fat"
       ></v-text-field>
 
-            <v-btn
-        
-        color="success"
-        class="mr-4"
-        @click="addProduct"
-      >
+      <v-btn color="success" class="mr-4" @click="addProduct">
         Dodaj Produkt
       </v-btn>
     </v-form>
@@ -39,8 +35,9 @@
   </v-app>
 </template>
 
-
 <script>
+import Alert from "./components/Alert";
+
 export default {
   data() {
     return {
@@ -55,18 +52,41 @@ export default {
         { text: "Fat (g)", value: "fat" },
       ],
       desserts: [],
-      shop:"",
-      calories:"",
-      fat:""
+      shop: "",
+      calories: "",
+      fat: "",
+      alertVisibility: false,
     };
   },
+  components: {
+    Alert,
+  },
   methods: {
-    addProduct(){
-      this.desserts.push({shop:this.shop,calories:this.calories, fat:this.fat})
-      
-    }
-    
-  }
- 
+    addProduct() {
+      let obj = { shop: this.shop, calories: this.calories, fat: this.fat };
+
+      if (this.validateProduct(obj)) {
+        this.desserts.push(obj);
+      }
+    },
+    setVisibleAlert(visible) {
+      if (!visible) {
+        this.alertVisibility = true
+      } else {
+        this.alertVisibility = false
+      }
+    },
+    validateProduct(obj) {
+      let req = true;
+
+      if (!obj.shop.length > 0) {
+        req = false;
+      }
+
+      this.setVisibleAlert(req)
+
+      return req;
+    },
+  },
 };
 </script>

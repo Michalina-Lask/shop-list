@@ -1,11 +1,12 @@
 <template>
-    <v-alert
-  border="top"
-  color="blue"
-  elevation="6"
-  icon="$mdiAccount"
-  type="info"
-></v-alert>
+<div>
+     <v-alert 
+  dense
+      outlined
+      type="error">
+      Uzupełnij dane</v-alert>
+</div>
+ 
 </template>
 
 
@@ -13,8 +14,9 @@
 
 export default {
   data(){
-    return{}
+    return{
+      alertMessage: "Uzupełnij dane"
+    }
   },
-  methods:{}
 }
-</script>
+  
