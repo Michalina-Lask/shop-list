@@ -1,42 +1,33 @@
 <template>
   <v-app id="inspire">
-    <alert v-show="alertVisibility"></alert>
-    <v-form ref="form">
-      <v-text-field
-        label="Shop"
-        :rules="rules"
-        hide-details="auto"
-        v-model="shop"
-      ></v-text-field>
-      <v-text-field
-        label="Calories"
-        :rules="rules"
-        hide-details="auto"
-        v-model="calories"
-      ></v-text-field>
-      <v-text-field
-        label="Fat"
-        :rules="rules"
-        hide-details="auto"
-        v-model="fat"
-      ></v-text-field>
-
-      <v-btn color="success" class="mr-4" @click="addProduct">
+    
+    <v-row>
+      <v-col cols="4">
+        <add-button></add-button>
+        <!-- <v-btn color="success" class="mr-4" @click="addProduct">
         Dodaj Produkt
-      </v-btn>
-    </v-form>
-
-    <v-data-table
+      </v-btn> -->
+      </v-col>
+      <v-col cols="12">
+        <v-data-table
       :headers="headers"
       :items="desserts"
       :items-per-page="5"
       class="elevation-1"
     ></v-data-table>
+      </v-col>
+    </v-row>
+    <dialog-window :dialog="dialog"></dialog-window>
+
+   
   </v-app>
 </template>
 
 <script>
-import Alert from "./components/Alert";
+import DialogWindow from './components/Dialog Window'
+import AddButton from './components/AddButton'
+
+
 
 export default {
   data() {
@@ -55,21 +46,21 @@ export default {
       shop: "",
       calories: "",
       fat: "",
-      alertVisibility: false,
+      dialog: true
     };
   },
   components: {
-    Alert,
+        DialogWindow,
+        AddButton,
+    
+   
   },
   methods: {
     addProduct() {
-      let obj = { shop: this.shop, calories: this.calories, fat: this.fat };
+      this.dialog = true
+      /* let obj = { shop: this.shop, calories: this.calories, fat: this.fat };
 
-      this.desserts.push(obj);
-
-      /* if (this.validateProduct(obj)) {
-        this.desserts.push(obj);
-      } */
+      this.desserts.push(obj); */
     },
     setVisibleAlert(val) {
       if (val.length > 0) {
