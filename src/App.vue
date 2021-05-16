@@ -12,7 +12,24 @@
           :items="desserts"
           :items-per-page="5"
           class="elevation-1"
-        ></v-data-table>
+        >
+        <template v-slot:item.actions="{ item }">
+        <v-icon
+          small
+          class="mr-2"
+          @click="editItem(item)"
+        >
+          mdi-pencil
+        </v-icon>
+        <v-icon
+          small
+          @click="deleteItem(item)"
+        >
+          mdi-delete
+        </v-icon>
+      </template>
+        
+        </v-data-table>
       </v-col>
     </v-row>
     <dialog-window
@@ -38,9 +55,10 @@ export default {
         },
         { text: "Calories", value: "calories" },
         { text: "Fat (g)", value: "fat" },
+        { text: 'Actions', value: 'actions', sortable: false },
       ],
       desserts: [],
-      
+
       dialogVisible: false,
     };
   },
@@ -57,8 +75,6 @@ export default {
       this.dialogVisible = val;
     },
     addProduct(obj) {
-    
-
       this.desserts.push(obj);
     },
     openForm() {
