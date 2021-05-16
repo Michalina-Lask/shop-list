@@ -1,33 +1,30 @@
 <template>
   <v-app id="inspire">
-    
     <v-row>
       <v-col cols="4">
-        <add-button></add-button>
-        <!-- <v-btn color="success" class="mr-4" @click="addProduct">
-        Dodaj Produkt
-      </v-btn> -->
+        <v-btn color="success" class="mr-4" @click="openForm">
+          Dodaj Produkt
+        </v-btn>
       </v-col>
       <v-col cols="12">
         <v-data-table
-      :headers="headers"
-      :items="desserts"
-      :items-per-page="5"
-      class="elevation-1"
-    ></v-data-table>
+          :headers="headers"
+          :items="desserts"
+          :items-per-page="5"
+          class="elevation-1"
+        ></v-data-table>
       </v-col>
     </v-row>
-    <dialog-window :dialog="dialog"></dialog-window>
-
-   
+    <dialog-window
+      :dialog="dialog"
+      @update-dialog="updateDialog"
+      @add-product="addProduct"
+    ></dialog-window>
   </v-app>
 </template>
 
 <script>
-import DialogWindow from './components/Dialog Window'
-import AddButton from './components/AddButton'
-
-
+import DialogWindow from "./components/DialogWindow";
 
 export default {
   data() {
@@ -43,43 +40,30 @@ export default {
         { text: "Fat (g)", value: "fat" },
       ],
       desserts: [],
-      shop: "",
-      calories: "",
-      fat: "",
-      dialog: true
+      
+      dialogVisible: false,
     };
   },
   components: {
-        DialogWindow,
-        AddButton,
-    
-   
+    DialogWindow,
+  },
+  computed: {
+    dialog() {
+      return this.dialogVisible;
+    },
   },
   methods: {
-    addProduct() {
-      this.dialog = true
-      /* let obj = { shop: this.shop, calories: this.calories, fat: this.fat };
+    updateDialog(val) {
+      this.dialogVisible = val;
+    },
+    addProduct(obj) {
+    
 
-      this.desserts.push(obj); */
+      this.desserts.push(obj);
     },
-    setVisibleAlert(val) {
-      if (val.length > 0) {
-        this.alertVisibility = false;
-      } else {
-        this.alertVisibility = true;
-      }
+    openForm() {
+      this.dialogVisible = true;
     },
-  },
-  watch: {
-    shop(val) {
-      this.setVisibleAlert(val)
-    },
-    calories(val){
-      this.setVisibleAlert(val)
-    },
-    fat(val){
-      this.setVisibleAlert(val)
-    }
   },
 };
 </script>
