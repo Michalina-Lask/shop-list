@@ -1,6 +1,6 @@
 <template>
   <v-row justify="center">
-    <v-dialog v-model="dialog" persistent max-width="600px">
+    <v-dialog v-model="dialog.dialogVisible" persistent max-width="600px">
       <v-card>
         <v-card-title>
           <span class="headline">User Profile</span>
@@ -54,9 +54,14 @@ export default {
   },
   methods: {
     saveData() {
-      let obj = { shop: this.shop, calories: this.calories, fat: this.fat }
-      this.$emit("add-product", obj) 
-      this.closeDialog()
+      let obj = { 
+        dialogVisible: false,
+        dialogItem:{
+          shop: this.shop, calories: this.calories, fat: this.fat 
+        }
+      }
+      this.$emit("modify-product", obj) 
+ 
     },
     closeDialog() {
       this.resetForm()

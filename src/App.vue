@@ -2,7 +2,7 @@
   <v-app id="inspire">
     <v-row>
       <v-col cols="4">
-        <v-btn color="success" class="mr-4" @click="openForm">
+        <v-btn color="success" class="mr-4" @click="addProduct">
           Dodaj Produkt
         </v-btn>
       </v-col>
@@ -13,29 +13,20 @@
           :items-per-page="5"
           class="elevation-1"
         >
-        <template v-slot:item.actions="{ item }">
-        <v-icon
-          small
-          class="mr-2"
-          @click="editItem(item)"
-        >
-          mdi-pencil
-        </v-icon>
-        <v-icon
-          small
-          @click="deleteItem(item)"
-        >
-          mdi-delete
-        </v-icon>
-      </template>
-        
+          <template v-slot:item.actions="{ item }">
+            <v-icon small class="mr-2" @click="editItem(item)">
+              mdi-pencil
+            </v-icon>
+            <v-icon small @click="deleteItem(item)">
+              mdi-delete
+            </v-icon>
+          </template>
         </v-data-table>
       </v-col>
     </v-row>
     <dialog-window
       :dialog="dialog"
-      @update-dialog="updateDialog"
-      @add-product="addProduct"
+      @modify-product="modifyProduct"
     ></dialog-window>
   </v-app>
 </template>
@@ -55,11 +46,14 @@ export default {
         },
         { text: "Calories", value: "calories" },
         { text: "Fat (g)", value: "fat" },
-        { text: 'Actions', value: 'actions', sortable: false },
+        { text: "Actions", value: "actions", sortable: false },
       ],
       desserts: [],
 
-      dialogVisible: false,
+      dialogProps: {
+        dialogVisible: false,
+        dialogItem: {},
+      },
     };
   },
   components: {
@@ -67,18 +61,32 @@ export default {
   },
   computed: {
     dialog() {
-      return this.dialogVisible;
+      return this.dialogProps;
     },
   },
   methods: {
-    updateDialog(val) {
-      this.dialogVisible = val;
+    updateDialogProps(item) {
+      this.dialogProps.dialogVisible = false
+      this.dialogProps.dialogItem = item
     },
-    addProduct(obj) {
-      this.desserts.push(obj);
+    addProduct(){
+      this.dialogProps.dialogVisible = true
+      this.dialogProps.dialogItem = {}
+
     },
-    openForm() {
-      this.dialogVisible = true;
+    modifyProduct(obj) {
+      this.dialogProps.dialogVisible = obj.dialogVisible
+      this.desserts.push(obj.dialogItem);
+    },
+    editItem(item) {
+        this.dialogProps.dialogVisible = true
+        this.dialogProps.dialogItem = item
+    },
+
+    deleteItem(item) {
+      this.editedIndex = this.desserts.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialogDelete = true;
     },
   },
 };
