@@ -33,11 +33,13 @@
 
 <script>
 import DialogWindow from "./components/DialogWindow";
+import { v4 as uuidv4 } from 'uuid'
 
 export default {
   data() {
     return {
       headers: [
+        { text: "UUID", value:"uuid"},
         {
           text: "Shop (100g serving)",
           align: "start",
@@ -52,6 +54,7 @@ export default {
 
       dialogProps: {
         dialogVisible: false,
+        dialogModify: false,
         dialogItem: {},
       },
     };
@@ -66,27 +69,34 @@ export default {
   },
   methods: {
     updateDialogProps(item) {
-      this.dialogProps.dialogVisible = false
-      this.dialogProps.dialogItem = item
+      this.dialogProps.dialogVisible = false;
+      this.dialogProps.dialogItem = item;
     },
-    addProduct(){
-      this.dialogProps.dialogVisible = true
-      this.dialogProps.dialogItem = {}
+    addProduct() {
+      this.dialogProps.dialogVisible = true;
+      this.dialogProps.dialogModify = false;
+      this.dialogProps.dialogItem = {uuid: uuidv4()};
 
     },
     modifyProduct(obj) {
-      this.dialogProps.dialogVisible = obj.dialogVisible
-      this.desserts.push(obj.dialogItem);
+      this.dialogProps.dialogVisible = obj.dialogVisible;
+
+      if (obj.dialogModify) {
+        console.log('test')
+      }else{
+         this.desserts.push(obj.dialogItem);
+      }
+      
     },
     editItem(item) {
-        this.dialogProps.dialogVisible = true
-        this.dialogProps.dialogItem = item
+      this.dialogProps.dialogVisible = true;
+      this.dialogProps.dialogModify = true;
+      this.dialogProps.dialogItem = item;
     },
 
-    deleteItem(item) {
-      this.editedIndex = this.desserts.indexOf(item);
-      this.editedItem = Object.assign({}, item);
-      this.dialogDelete = true;
+    deleteItem(row) {
+
+ this.desserts=this.desserts.filter(item => item.uuid != row.uuid)
     },
   },
 };

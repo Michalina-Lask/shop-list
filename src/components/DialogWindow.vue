@@ -4,21 +4,27 @@
       <v-card>
         <v-card-title>
           <span class="headline">User Profile</span>
+          
         </v-card-title>
         <v-card-text>
           <v-container>
+            <v-row>
+            <v-col cols="12" sm="6" md="4">
+              <span class="h3" >UUID : {{this.dialog.dialogItem.uuid}}</span>
+            </v-col>
+            </v-row>
             <v-row>
               <v-col cols="12" sm="6" md="4"> </v-col>
               <v-col cols="12" sm="6" md="4"> </v-col>
               <v-col cols="12" sm="6" md="4"> </v-col>
               <v-col cols="12">
-                <v-text-field v-model="shop" label="Shop" required></v-text-field>
+                <v-text-field v-model="dialog.dialogItem.shop" label="Shop" required></v-text-field>
               </v-col>
               <v-col cols="12">
-                <v-text-field v-model="calories" label="Calories" required></v-text-field>
+                <v-text-field v-model="dialog.dialogItem.calories" label="Calories" required></v-text-field>
               </v-col>
               <v-col cols="12" sm="6">
-                <v-select v-model="fat"
+                <v-select v-model="dialog.dialogItem.fat"
                   :items="['0-17', '18-29', '30-54', '54+']"
                   label="Fat"
                   required
@@ -43,6 +49,7 @@
 </template>
 
 <script>
+
 export default {
   props: ["dialog"],
   data() {
@@ -56,8 +63,12 @@ export default {
     saveData() {
       let obj = { 
         dialogVisible: false,
+        dialogModify: this.dialog.dialogModify,
         dialogItem:{
-          shop: this.shop, calories: this.calories, fat: this.fat 
+          uuid: this.dialog.dialogItem.uuid,
+          shop: this.dialog.dialogItem.shop, 
+          calories: this.dialog.dialogItem.calories, 
+          fat: this.dialog.dialogItem.fat 
         }
       }
       this.$emit("modify-product", obj) 
@@ -65,16 +76,17 @@ export default {
     },
     closeDialog() {
       this.resetForm()
-      this.dialog = false
-      this.$emit("update-dialog", this.dialog);
+     let obj = { 
+        dialogVisible: false,
+        dialogItem:{}
+               }
+      this.$emit("modify-product", obj);
     },
-    resetForm(){
-      this.shop = "",
-      this.calories = "",
-      this.fat = ""
-    }
+  
   },
-};
+ 
+
+    };
 </script>
 
 <style></style>
